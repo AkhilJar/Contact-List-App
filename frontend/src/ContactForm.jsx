@@ -8,6 +8,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
     const updating = Object.entries(existingContact).length !== 0
 
     const onSubmit = async (e) => {
+       //prevent refresh of page automatically
         e.preventDefault()
 
         const data = {
@@ -18,6 +19,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
         const url = "http://127.0.0.1:5000/" + (updating ? `update_contact/${existingContact.id}` : "create_contact")
         const options = {
             method: updating ? "PATCH" : "POST",
+            //indicate sending Json data
             headers: {
                 "Content-Type": "application/json"
             },
@@ -25,6 +27,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
         }
         const response = await fetch(url, options)
         if (response.status !== 201 && response.status !== 200) {
+            //if api call not successful
             const data = await response.json()
             alert(data.message)
         } else {
